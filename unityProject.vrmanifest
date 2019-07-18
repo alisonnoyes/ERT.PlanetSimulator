@@ -1,0 +1,16 @@
+{
+  "source": "Unity",
+  "applications": [
+    {
+      "app_key": "application.generated.unity.ert.planetsimulator.exe",
+      "launch_type": "url",
+      "url": "steam://launch/",
+      "action_manifest_path": "C:\\Users\\ovras\\Development\\ERT.PlanetSimulator\\actions.json",
+      "strings": {
+        "en_us": {
+          "name": "ERT.PlanetSimulator [Testing]"
+        }
+      }
+    }
+  ]
+}
