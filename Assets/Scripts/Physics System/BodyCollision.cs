@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Valve.VR.InteractionSystem;
 
 [RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(Body))]
@@ -37,12 +38,13 @@ public class BodyCollision : MonoBehaviour
 
         double thisSpeed = DoubleVectorHelper.Dot(b.velocity, dAxis);
 
-        Rigidbody handBody = hand.gameObject.GetComponent<Rigidbody>();
-        double[] scaledHandVelocity = { handBody.velocity.x * scale, handBody.velocity.y * scale, handBody.velocity.z * scale };
+        Vector3 handVelocity = hand.GetComponent<VelocityEstimator>().GetVelocityEstimate();
+        double[] scaledHandVelocity = { handVelocity.x * scale, handVelocity.y * scale, handVelocity.z * scale };
         double handSpeed = DoubleVectorHelper.Dot(scaledHandVelocity, dAxis);
 
         double reducedMass = (b.mass * handMass) / (b.mass + handMass);
         double impulseMag = reducedMass * (1 + elasticity) * (handSpeed - thisSpeed);
+        //Debug.Log("magnitude = " + reducedMass + " * " + (1 + elasticity) + " * " + handSpeed + " - " + thisSpeed);
 
         return impulseMag;
     }
@@ -50,6 +52,8 @@ public class BodyCollision : MonoBehaviour
     private void ApplyImpulse(Vector3 axis, double mag)
     {
         double[] impulse = { axis.x * mag, axis.y * mag, axis.z * mag };
+        //Debug.Log("Detected collision on body " + b.name + " of " + impulse[0] + " " + impulse[1] + " " + impulse[2]);
+        //Debug.Log("Axis " + axis + " and magnitude " + mag);
         b.AddImpulse(impulse);
     }
 
